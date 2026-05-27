@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Blackspace® — Client Deck (16:9 Presentation)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..700;1,400..700&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+  
+  <!-- CDN React & Babel -->
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <!-- Scaling Helpers -->
+  <script src="deck-stage.js"></script>
+
+  <style>
+    :root {
+      --paper: #f2ede2;
+      --ink: #0a0a0a;
+      --mint: #9de6d8;
+      --lilac: #dfc4f0;
+      --sky: #a7d0f5;
+      --butter: #f5d77a;
+      --peach: #f6b39a;
+      --pop-a: #FF4D1A;
+      --pop-b: #FF2E8B;
+      --pop-c: #2E4CFF;
+      
+      --font-display: 'Space Grotesk', -apple-system, sans-serif;
+      --font-italic: 'EB Garamond', serif;
+      --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: #0d0d0d !important;
+    }
+    
+    /* Presentation specific layouts */
+    .slide-wrapper {
+      width: 100%;
+      height: 100%;
+      padding: 60px 80px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background-color: var(--paper);
+      color: var(--ink);
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--ink);
+    }
+    
+    .slide-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      font-weight: bold;
+      opacity: 0.5;
+      border-bottom: 1px solid rgba(10, 10, 10, 0.08);
+      padding-bottom: 14px;
+      margin-bottom: 24px;
+    }
+
+    .slide-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      font-weight: bold;
+      opacity: 0.5;
+      border-top: 1px solid rgba(10, 10, 10, 0.08);
+      padding-top: 14px;
+      margin-top: 24px;
+    }
+
+    .deck-card {
+      border: 2px solid var(--ink);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 4px 4px 0 var(--ink);
+      background-color: var(--paper);
+      position: relative;
+    }
+
+    .split-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: center;
+      flex-grow: 1;
+    }
+  </style>
+</head>
+<body>
+  
+  <div id="root"></div>
+
+  <!-- Load component definitions -->
+  <script type="text/babel" src="sp-kit.jsx"></script>
+  <script type="text/babel" src="tweaks-panel.jsx"></script>
+  <script type="text/babel" src="pages/app.jsx"></script>
+
+  <script type="text/babel">
+    const deckSlides = [
+      // 1. Cover
+      {
+        id: 'cover',
+        render: () => (
+          <div className="slide-wrapper" style={{ justifyContent: 'center', alignItems: 'center', textAlign: 'center' }}>
+            <window.SPStar size={120} color="var(--pop-a)" rotate="10deg" top="100px" left="150px" />
+            <window.SPStar size={90} color="var(--pop-b)" rotate="-15deg" bottom="120px" right="200px" />
+            <div style={{ position: 'absolute', top: '100px', right: '150px', transform: 'rotate(5deg)' }}>
+              <window.SPStatusSticker statusType="onset" />
+            </div>
+            
+            <h1 style={{ fontSize: '130px', margin: '0 0 10px 0', lineHeight: '0.85', letterSpacing: '-0.04em' }}>
+              blackspace®
+            </h1>
+            <p className="font-italic" style={{ fontSize: '32px', margin: '0 0 40px 0', opacity: 0.85 }}>
+              Writers who shoot. Editors who pitch. Directors who care about commas.
+            </p>
+            
+            <div style={{ display: 'flex', gap: '16px' }}>
+              <window.SPSticker variant="square" bg="var(--mint)" rotation="-3deg">
+                <span style={{ fontSize: '14px', fontWeight: 'bold' }}>2026 Client Presentation</span>
+              </window.SPSticker>
+              <window.SPSticker variant="round" bg="var(--lilac)" rotation="4deg">
+                <span style={{ fontSize: '14px', fontWeight: 'bold' }}>Bengaluru, IN</span>
+              </window.SPSticker>
+            </div>
+          </div>
+        ),
+        notes: "Welcome, everyone. This is Blackspace. We are a boutique content studio based in Bengaluru. Our core thesis is simple: we remove the agency bloat. The people who write your scripts are the ones holding the cameras; the editors who grade the footage are the ones who pitch the concepts. Today, I'll walk you through our creative capabilities, bento portfolios, case studies, and pricing models."
+      },
+      // 2. Index
+      {
+        id: 'index',
+        render: () => (
+          <div className="slide-wrapper">
+            <div className="slide-header">
+              <span>blackspace® deck</span>
+              <span>02 / agenda index</span>
+            </div>
+            
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '30px', flexGrow: 1, justifyContent: 'center' }}>
+              <h2 style={{ fontSize: '56px', margin: 0 }}>Presentation Agenda</h2>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px 60px', maxWidth: '800px' }}>
+                {[
+                  '01. Cover & Overview', '05. Project Lifecycle', '09. The Roster',
+                  '02. Presentation Agenda', '06. Selected Bento', '10. Core Convictions',
+                  '03. Studio DNA', '07. Case Study: Okinawa', '11. Engagement Scales',
+                  '04. Capabilities Menu', '08. Neural Thesis', '12. Next Steps'
+                ].map((item, idx) => (
+                  <div key={idx} style={{ 
+                    fontSize: '20px', 
+                    fontWeight: 'bold', 
+                    paddingBottom: '12px',
+                    borderBottom: '1px solid rgba(10,10,10,0.1)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '12px'
+                  }}>
+                    <span style={{ color: 'var(--pop-a)' }}>✳</span> {item}
+                  </div>
+                ))}
+              </div>
+            </div>
+            
+            <div className="slide-footer">
+              <span>Agenda</span>
+              <span>Slide 2 of 12</span>
+            </div>
+          </div>
+        ),
+        notes: "Here is what we will cover. We'll start with our studio DNA, followed by our standard capabilities grid. Then, we will look at how we execute work using a 5-step model. We'll share a quick deep-dive case study of our Okinawa series, our stance on generative AI, introduce the crew, and finally review detailed pricing packages."
+      },
+      // 3. Who we are
+      {
+        id: 'who-we-are',
+        render: () => (
+          <div className="slide-wrapper">
+            <div className="slide-header">
+              <span>blackspace® deck</span>
+              <span>03 / studio dna</span>
+            </div>
+            
+            <div className="split-layout">
+              <div>
+                <span className="font-italic" style={{ fontSize: '20px', color: 'var(--pop-a)', fontWeight: 'bold' }}>Our Identity</span>
+                <h2 style={{ fontSize: '64px', margin: '12px 0 24px 0', lineHeight: '1.0' }}>We build narratives with visual and technical teeth.</h2>
+                <p style={{ fontSize: '18px', lineHeight: '1.5', opacity: 0.8, margin: 0 }}>
+                  We work at the intersection of cinematic media production and software engineering. We believe storytelling tools need to evolve beyond standard flat grids, which is why we specialize in high-touch, customized layouts and rich interactive media.
+                </p>
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+                {[
+                  { title: '11', subtitle: 'Humans in HQ', bg: 'var(--mint)', rot: '-3deg' },
+                  { title: '1', subtitle: 'Grammar Dog', bg: 'var(--lilac)', rot: '4deg' },
+                  { title: '40+', subtitle: 'Master Shoots', bg: 'var(--sky)', rot: '2deg' },
+                  { title: '100%', subtitle: 'Comma Obsession', bg: 'var(--butter)', rot: '-4deg' }
+                ].map((stat, idx) => (
+                  <div key={idx} className="deck-card" style={{ background: stat.bg, transform: `rotate(${stat.rot})`, textAlign: 'center', padding: '30px 10px' }}>
+                    <div style={{ fontSize: '48px', fontWeight: 'bold', fontFamily: 'var(--font-display)', marginBottom: '4px' }}>{stat.title}</div>
+                    <div style={{ fontSize: '13px', fontWeight: 'bold', textTransform: 'uppercase', opacity: 0.7 }}>{stat.subtitle}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            
+            <div className="slide-footer">
+              <span>Studio DNA</span>
+              <span>Slide 3 of 12</span>
+            </div>
+          </div>
+        ),
+        notes: "Who are we, exactly? We are 11 creators in Koramangala. Our metrics speak for themselves: we have handled over 40 physical productions across three continents, expanded into interactive web apps, and maintain a rigorous obsession with typography and editorial perfection."
+      },
+      // 4. What we do
+      {
+        id: 'what-we-do',
+        render: () => (
+          <div className="slide-wrapper">
+            <div className="slide-header">
+              <span>blackspace® deck</span>
+              <span>04 / capabilities menu</span>
+            </div>
+            
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', flexGrow: 1, justifyContent: 'center' }}>
+              <h2 style={{ fontSize: '48px', margin: 0 }}>Bespoke Capabilities Grid</h2>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px' }}>
+                {[
+                  { num: '01', title: 'Campaigns', desc: 'Cross-platform narrative campaign development.', bg: 'var(--pop-a)', color: 'var(--paper)' },
+                  { num: '02', title: 'Branded Films', desc: 'Documentaries and commercial shoots.', bg: 'var(--mint)' },
+                  { num: '03', title: 'Color & Sound', desc: 'DaVinci Resolve grading & Atmos sound.', bg: 'var(--lilac)' },
+                  { num: '04', title: 'Brand Systems', desc: 'Visual strategy guides and wordmarks.', bg: 'var(--sky)' },
+                  { num: '05', title: 'AI Automation', desc: 'Accelerated concept iteration rounds.', bg: 'var(--butter)' },
+                  { num: '06', title: 'Bespoke Web', desc: 'Tactile React and WebGL applications.', bg: 'var(--peach)' }
+                ].map((serv, idx) => (
+                  <div key={idx} className="deck-card" style={{ background: serv.bg, color: serv.color || 'var(--ink)', padding: '16px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', opacity: 0.7 }}>
+                      <span>{serv.num}</span>
+                      <span>✳</span>
+                    </div>
+                    <h3 style={{ fontSize: '24px', margin: '20px 0 6px 0', fontFamily: 'var(--font-display)' }}>{serv.title}</h3>
+                    <p style={{ fontSize: '13px', margin: 0, opacity: 0.8, lineHeight: '1.3' }}>{serv.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+            
+            <div className="slide-footer">
+              <span>Capabilities</span>
+              <span>Slide 4 of 12</span>
+            </div>
+          </div>
+        ),
+        notes: "This is our capabilities menu, grouped into six channels. We do full campaign scoping, high-end commercial shoots, Dolby audio engineering, graphic books, neural mockups, and interactive coding. Everything is custom-scoped."
+      },
+      // 5. Process
+      {
+        id: 'process',
+        render: () => (
+          <div className="slide-wrapper">
+            <div className="slide-header">
+              <span>blackspace® deck</span>
+              <span>05 / execution lifecycle</span>
+            </div>
+            
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '30px', flexGrow: 1, justifyContent: 'center' }}>
+              <h2 style={{ fontSize: '48px', margin: 0 }}>The Onboarding Lifecycle</h2>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '16px' }}>
+                {[
+                  { step: '01', name: 'Call', desc: 'Direct scope dialogue with builders.' },
+                  { step: '02', name: 'Brief', desc: '1-page statement of constraints.' },
+                  { step: '03', name: 'Concept', desc: '3 conceptual design directions.' },
+                  { step: '04', name: 'Make', desc: 'Physical shooting & code compilers.' },
+                  { step: '05', name: 'Ship', desc: 'Handover of raw assets and code.' }
+                ].map((p, idx) => (
+                  <div key={idx} className="deck-card" style={{ background: 'var(--paper)', minHeight: '180px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                    <div style={{ fontSize: '28px', fontWeight: 'bold', color: 'var(--pop-a)', fontFamily: 'var(--font-display)' }}>{p.step}</div>
+                    <div>
+                      <h4 style={{ fontSize: '18px', margin: '0 0 6px 0', fontFamily: 'var(--font-display)' }}>{p.name}</h4>
+                      <p style={{ fontSize: '12px', margin: 0, opacity: 0.7, lineHeight: '1.3' }}>{p.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            
+            <div className="slide-footer">
+              <span>Lifecycle</span>
+              <span>Slide 5 of 12</span>
+            </div>
+          </div>
+        ),
+        notes: "How do we get things done? Our process covers five phases. We start with a direct call, write a brief, sketch three concept cards, jump to execution with weekly reviews, and finish with full raw asset transfers. No locked source files."
+      },
+      // 6. Selected work
+      {
+        id: 'selected-work',
+        render: () => (
+          <div className="slide-wrapper">
+            <div className="slide-header">
+              <span>blackspace® deck</span>
+              <span>06 / bento showcase</span>
+            </div>
+            
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', flexGrow: 1, justifyContent: 'center' }}>
+              <h2 style={{ fontSize: '44px', margin: 0 }}>Selected Bento Portfolio</h2>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(12, 1fr)', gap: '16px' }}>
+                <div className="deck-card" style={{ gridColumn: 'span 6', background: 'var(--peach)' }}>
+                  <span style={{ fontSize: '11px', textTransform: 'uppercase', fontWeight: 'bold', opacity: 0.7 }}>Campaign</span>
+                  <h3 style={{ fontSize: '28px', margin: '10px 0 4px 0', fontFamily: 'var(--font-display)' }}>Okinawa Odyssey</h3>
+                  <p style={{ fontSize: '13px', margin: 0, opacity: 0.8 }}>Cinematic series on remote Japanese chains.</p>
+                </div>
+                <div className="deck-card" style={{ gridColumn: 'span 3', background: 'var(--mint)' }}>
+                  <span style={{ fontSize: '11px', textTransform: 'uppercase', fontWeight: 'bold', opacity: 0.7 }}>Web</span>
+                  <h3 style={{ fontSize: '24px', margin: '10px 0 4px 0', fontFamily: 'var(--font-display)' }}>MistriBhai</h3>
+                  <p style={{ fontSize: '13px', margin: 0, opacity: 0.8 }}>React portal upgrade.</p>
+                </div>
+                <div className="deck-card" style={{ gridColumn: 'span 3', background: 'var(--lilac)' }}>
+                  <span style={{ fontSize: '11px', textTransform: 'uppercase', fontWeight: 'bold', opacity: 0.7 }}>AI</span>
+                  <h3 style={{ fontSize: '24px', margin: '10px 0 4px 0', fontFamily: 'var(--font-display)' }}>Dreamscapes</h3>
+                  <p style={{ fontSize: '13px', margin: 0, opacity: 0.8 }}>Image mockups.</p>
+                </div>
+                <div className="deck-card" style={{ gridColumn: 'span 4', background: 'var(--sky)' }}>
+                  <h4 style={{ fontSize: '18px', margin: 0, fontFamily: 'var(--font-display)' }}>Marvel AR</h4>
+                  <span style={{ fontSize: '12px', opacity: 0.7 }}>Three.js hand-tracking.</span>
+                </div>
+                <div className="deck-card" style={{ gridColumn: 'span 4', background: 'var(--butter)' }}>
+                  <h4 style={{ fontSize: '18px', margin: 0, fontFamily: 'var(--font-display)' }}>Iron Man HUD</h4>
+                  <span style={{ fontSize: '12px', opacity: 0.7 }}>Avionics interface prototypes.</span>
+                </div>
+                <div className="deck-card" style={{ gridColumn: 'span 4', background: 'var(--peach)' }}>
+                  <h4 style={{ fontSize: '18px', margin: 0, fontFamily: 'var(--font-display)' }}>Particle App</h4>
+                  <span style={{ fontSize: '12px', opacity: 0.7 }}>Real-time face mapping.</span>
+                </div>
+              </div>
+            </div>
+            
+            <div className="slide-footer">
+              <span>Bento portfolio</span>
+              <span>Slide 6 of 12</span>
+            </div>
+          </div>
+        ),
+        notes: "Here is a snapshot of our bento work, which we saw on our main index. It showcases everything from the Okinawa documentary to the interactive React repair app, OpenAI dreamscapes, and experimental MediaPipe AR applications."
+      },
+      // 7. Case study - Okinawa
+      {
+        id: 'case-study',
+        render: () => (
+          <div className="slide-wrapper">
+            <div className="slide-header">
+              <span>blackspace® deck</span>
+              <span>07 / project deep dive</span>
+            </div>
+            
+            <div className="split-layout">
+              <div className="deck-card" style={{
+                background: 'linear-gradient(135deg, var(--peach), var(--pop-a))',
+                height: '320px',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'flex-end',
+                padding: '40px',
+                color: 'var(--paper)',
+                boxShadow: '6px 6px 0 var(--ink)'
+              }}>
+                <h3 style={{ fontSize: '48px', margin: 0, lineHeight: '1.0', fontFamily: 'var(--font-display)' }}>Okinawa Odyssey</h3>
+                <p style={{ fontSize: '16px', opacity: 0.9, margin: '8px 0 0 0' }}>Cinematic docu-series case study.</p>
+              </div>
+              <div>
+                <span className="font-italic" style={{ fontSize: '18px', color: 'var(--pop-a)', fontWeight: 'bold' }}>Selected Case Study</span>
+                <h3 style={{ fontSize: '32px', margin: '8px 0 16px 0', fontFamily: 'var(--font-display)' }}>Japan Tourism Campaign</h3>
+                <p style={{ fontSize: '15px', lineHeight: '1.45', opacity: 0.8, marginBottom: '20px' }}>
+                  We traveled to the outermost chains of Okinawa with a lightweight 3-person crew. By avoiding bulky production equipment, we shot intimate stories of local craftsmen and farmers in high-definition 4K.
+                </p>
+                <div style={{ display: 'flex', gap: '24px' }}>
+                  <div>
+                    <div style={{ fontSize: '28px', fontWeight: 'bold' }}>3.2M</div>
+                    <div style={{ fontSize: '11px', textTransform: 'uppercase', opacity: 0.6 }}>Views</div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '28px', fontWeight: 'bold' }}>$40k</div>
+                    <div style={{ fontSize: '11px', textTransform: 'uppercase', opacity: 0.6 }}>Budget scale</div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '28px', fontWeight: 'bold' }}>4 Wks</div>
+                    <div style={{ fontSize: '11px', textTransform: 'uppercase', opacity: 0.6 }}>Production</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div className="slide-footer">
+              <span>Okinawa study</span>
+              <span>Slide 7 of 12</span>
+            </div>
+          </div>
+        ),
+        notes: "Let's zoom into one case study: Okinawa Odyssey. The client was Japan Tourism. They wanted to attract travelers to lesser-known islands. We sent a 3-person team with high-end cinema bodies. The output was a three-part film sequence which garnered 3.2 million views and was completed within 4 weeks."
+      },
+      // 8. AI tastefully
+      {
+        id: 'ai-tastefully',
+        render: () => (
+          <div className="slide-wrapper">
+            <div className="slide-header">
+              <span>blackspace® deck</span>
+              <span>08 / neural thesis</span>
+            </div>
+            
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', flexGrow: 1, justifyContent: 'center' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <h2 style={{ fontSize: '48px', margin: 0 }}>AI Tastefully Thesis</h2>
+                <window.SPSticker variant="square" bg="var(--pop-a)" rotation="2deg" style={{ padding: '6px 12px' }}>
+                  <span style={{ fontSize: '12px', fontWeight: 'bold', color: 'var(--paper)' }}>Human Gatekeeping</span>
+                </window.SPSticker>
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+                {[
+                  { icon: '⚡', title: 'Intelligent Mockups', desc: 'We compile high-resolution reference layouts in minutes, allowing client teams to select thematic direction before shoots begin.' },
+                  { icon: '🔒', title: 'Strict Privacy', desc: 'All prompt loops and model fine-tuning runs on local networks. Client source scripts are never indexed in public models.' },
+                  { icon: '📝', title: 'Draft Compilations', desc: 'We utilize LLMs to structure metadata and cross-reference research sources so our writers spend time on copy polishing.' },
+                  { icon: '🎨', title: 'The Human Polish', desc: 'No machine output is shipped raw. We believe final color correction, typography tuning, and coding require human eye.' }
+                ].map((card, idx) => (
+                  <div key={idx} className="deck-card" style={{ padding: '24px' }}>
+                    <div style={{ fontSize: '24px', marginBottom: '8px' }}>{card.icon}</div>
+                    <h4 style={{ fontSize: '20px', margin: '0 0 6px 0', fontFamily: 'var(--font-display)' }}>{card.title}</h4>
+                    <p style={{ fontSize: '14px', margin: 0, opacity: 0.75, lineHeight: '1.4' }}>{card.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+            
+            <div className="slide-footer">
+              <span>AI Thesis</span>
+              <span>Slide 8 of 12</span>
+            </div>
+          </div>
+        ),
+        notes: "Our neural thesis: we use artificial intelligence tastefully. We don't generate flat stories and ship them. Instead, we use it for layout mockups, database lookup, and raw copywriting speed. We enforce strict data privacy, ensuring no client intellectual property leaks to public training corpuses."
+      },
+      // 9. Team
+      {
+        id: 'team',
+        render: () => (
+          <div className="slide-wrapper">
+            <div className="slide-header">
+              <span>blackspace® deck</span>
+              <span>09 / the team</span>
+            </div>
+            
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '30px', flexGrow: 1, justifyContent: 'center' }}>
+              <div>
+                <h2 style={{ fontSize: '48px', margin: '0 0 6px 0' }}>The Creative Roster</h2>
+                <p style={{ fontSize: '16px', opacity: 0.8, margin: 0 }}>Meet the builders of Blackspace. 11 humans, 1 dog, based in Koramangala.</p>
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: '16px' }}>
+                {[
+                  { name: 'Akki', role: 'Founder/Dir', bg: 'var(--mint)', emoji: '🎬' },
+                  { name: 'Vikram', role: 'Writer', bg: 'var(--lilac)', emoji: '✍️' },
+                  { name: 'Priya', role: 'Editor', bg: 'var(--sky)', emoji: '💻' },
+                  { name: 'Natasha', role: 'Camera', bg: 'var(--butter)', emoji: '🎥' },
+                  { name: 'Rahul', role: 'Developer', bg: 'var(--peach)', emoji: '⚡' },
+                  { name: 'Commy', role: 'Commas', bg: 'var(--mint)', emoji: '🐕' }
+                ].map((member, idx) => (
+                  <div key={idx} className="deck-card" style={{ background: member.bg, padding: '16px', textAlign: 'center' }}>
+                    <div style={{ fontSize: '36px', marginBottom: '8px' }}>{member.emoji}</div>
+                    <h4 style={{ fontSize: '18px', margin: '0 0 4px 0', fontFamily: 'var(--font-display)' }}>{member.name}</h4>
+                    <p style={{ fontSize: '11px', margin: 0, opacity: 0.6, fontWeight: 'bold' }}>{member.role}</p>
+                  </div>
+                ))}
+              </div>
+              <div style={{ fontSize: '13px', opacity: 0.5, fontStyle: 'italic', textAlign: 'center' }}>
+                + 5 more team members not pictured above.
+              </div>
+            </div>
+            
+            <div className="slide-footer">
+              <span>The Roster</span>
+              <span>Slide 9 of 12</span>
+            </div>
+          </div>
+        ),
+        notes: "Here is the core crew. Akki focuses on founder relations and direction. Vikram leads script narratives. Priya runs our editing bay. Natasha handles the lens work. Rahul leads digital and React development. And Commy, our resident dog, ensures our copy contains impeccable commas."
+      },
+      // 10. Why us
+      {
+        id: 'why-us',
+        render: () => (
+          <div className="slide-wrapper">
+            <div className="slide-header">
+              <span>blackspace® deck</span>
+              <span>10 / core convictions</span>
+            </div>
+            
+            <div className="split-layout">
+              <div>
+                <h2 style={{ fontSize: '64px', margin: '0 0 24px 0', lineHeight: '1.0' }}>Why choose the Blackspace model?</h2>
+                <p style={{ fontSize: '18px', opacity: 0.8, lineHeight: '1.5', margin: 0 }}>
+                  We operate as a high-density creative team. We remove the layers of corporate client service directors, bringing the final decision-makers directly to the conversation from Day 0.
+                </p>
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                {[
+                  { num: 'I', title: 'Speed & Directness', desc: 'No accounts managers. Talk directly to the writers and developers.' },
+                  { num: 'II', title: 'Grammar & Taste', desc: 'We write scripts with absolute editorial rigor and visual personality.' },
+                  { num: 'III', title: 'Source Code Ownership', desc: 'We deliver completed code blocks and raw footage without restrictions.' }
+                ].map((item, idx) => (
+                  <div key={idx} style={{ display: 'flex', gap: '16px', alignItems: 'flex-start', borderBottom: '1px solid rgba(10,10,10,0.1)', paddingBottom: '12px' }}>
+                    <span className="font-italic" style={{ fontSize: '32px', fontWeight: 'bold', color: 'var(--pop-a)', lineHeight: '1' }}>{item.num}</span>
+                    <div>
+                      <h4 style={{ fontSize: '18px', margin: '0 0 4px 0', fontFamily: 'var(--font-display)' }}>{item.title}</h4>
+                      <p style={{ fontSize: '13px', margin: 0, opacity: 0.75, lineHeight: '1.4' }}>{item.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            
+            <div className="slide-footer">
+              <span>Convictions</span>
+              <span>Slide 10 of 12</span>
+            </div>
+          </div>
+        ),
+        notes: "Why choose our model? First, speed and directness. You talk straight to the builders. Second, visual taste. We don't build flat templates; we design bespoke Sticker Pop layouts. Third, full source code ownership. Once we ship, the files are 100% yours."
+      },
+      // 11. Engagements
+      {
+        id: 'engagements',
+        render: () => (
+          <div className="slide-wrapper">
+            <div className="slide-header">
+              <span>blackspace® deck</span>
+              <span>11 / engagement scales</span>
+            </div>
+            
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', flexGrow: 1, justifyContent: 'center' }}>
+              <h2 style={{ fontSize: '44px', margin: 0 }}>Engagement Packages</h2>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px' }}>
+                {[
+                  { tier: 'Sprint Core', price: '$8k', desc: 'Bespoke brand system design or full 6-step copywriting project.', bg: 'var(--mint)' },
+                  { tier: 'Production Plus', price: '$22k', desc: '1 commercial film, color correction, and sound design suite setup.', bg: 'var(--lilac)' },
+                  { tier: 'Enterprise Portal', price: '$45k', desc: 'Interactive React/WebGL platform, campaign movies, and prompt automation.', bg: 'var(--sky)' }
+                ].map((tier, idx) => (
+                  <div key={idx} className="deck-card" style={{ background: tier.bg, padding: '24px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', minHeight: '260px' }}>
+                    <div>
+                      <span style={{ fontSize: '11px', textTransform: 'uppercase', fontWeight: 'bold', opacity: 0.6 }}>Engagement Tier</span>
+                      <h3 style={{ fontSize: '28px', margin: '8px 0 4px 0', fontFamily: 'var(--font-display)' }}>{tier.tier}</h3>
+                      <p style={{ fontSize: '13px', opacity: 0.8, lineHeight: '1.4', margin: 0 }}>{tier.desc}</p>
+                    </div>
+                    <div style={{ borderTop: '1px solid var(--ink)', paddingTop: '16px', marginTop: '16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ fontSize: '11px', textTransform: 'uppercase', opacity: 0.5 }}>Starting at</span>
+                      <span style={{ fontSize: '32px', fontWeight: 'bold', fontFamily: 'var(--font-display)' }}>{tier.price}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            
+            <div className="slide-footer">
+              <span>Pricing</span>
+              <span>Slide 11 of 12</span>
+            </div>
+          </div>
+        ),
+        notes: "We have three structured pricing modules. Our Sprint Core starts at $8k for brand strategy. Production Plus is $22k for full commercial film shooting and grading. The Enterprise Portal tier, starting at $45k, includes advanced Three.js WebGL portals, automated pipeline drafting, and multiple promo films."
+      },
+      // 12. Let's make something
+      {
+        id: 'conclusion',
+        render: () => (
+          <div className="slide-wrapper" style={{ justifyContent: 'center', alignItems: 'center', textAlign: 'center' }}>
+            <window.SPStar size={100} color="var(--pop-b)" rotate="-15deg" top="80px" right="120px" />
+            <window.SPStar size={80} color="var(--pop-a)" rotate="20deg" bottom="100px" left="100px" />
+            
+            <h2 style={{ fontSize: '80px', margin: '0 0 16px 0', lineHeight: '0.95', fontFamily: 'var(--font-display)' }}>
+              Let’s make <br />
+              something <span className="font-italic" style={{ color: 'var(--pop-a)' }}>beautiful</span>.
+            </h2>
+            
+            <p style={{ fontSize: '22px', opacity: 0.8, maxWidth: '600px', margin: '0 0 40px 0', lineHeight: '1.4' }}>
+              What are you building? When do we start? <br />
+              <a href="mailto:hello@blackspace.media" style={{ color: 'var(--ink)', fontWeight: 'bold', textDecoration: 'underline' }}>hello@blackspace.media</a>
+            </p>
+            
+            <div style={{ display: 'flex', gap: '12px' }}>
+              <a href="contact.html" style={{
+                background: 'var(--ink)',
+                color: 'var(--paper)',
+                padding: '16px 36px',
+                borderRadius: '999px',
+                fontSize: '15px',
+                fontWeight: 'bold',
+                textDecoration: 'none',
+                boxShadow: '3px 3px 0 var(--ink)'
+              }}>
+                Fill Intake Brief ↗
+              </a>
+            </div>
+          </div>
+        ),
+        notes: "That completes the deck walkthrough. Let's build something beautiful. I have two simple questions: What are you building? And when do we start? You can reach us at hello@blackspace.media. Thank you."
+      }
+    ];
+
+    function SPDeck() {
+      const [currentSlide, setCurrentSlide] = React.useState(0);
+      const [showNotes, setShowNotes] = React.useState(false);
+
+      const nextSlide = React.useCallback(() => {
+        setCurrentSlide((prev) => Math.min(prev + 1, deckSlides.length - 1));
+      }, []);
+
+      const prevSlide = React.useCallback(() => {
+        setCurrentSlide((prev) => Math.max(prev - 1, 0));
+      }, []);
+
+      React.useEffect(() => {
+        const handleKeyDown = (e) => {
+          if (e.key === 'ArrowRight' || e.key === 'Space') {
+            nextSlide();
+          } else if (e.key === 'ArrowLeft') {
+            prevSlide();
+          } else if (e.key === 'n' || e.key === 'N') {
+            setShowNotes((prev) => !prev);
+          }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+      }, [nextSlide, prevSlide]);
+
+      const slide = deckSlides[currentSlide];
+
+      return (
+        <div style={{
+          width: '100vw',
+          height: '100vh',
+          backgroundColor: '#0a0a0a',
+          position: 'relative',
+          overflow: 'hidden',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}>
+          
+          {/* Deck scaling stage */}
+          <div id="deck-container">
+            {slide.render()}
+          </div>
+
+          {/* Navigation Controls HUD (Sticky Overlay) */}
+          <div className="no-print" style={{
+            position: 'fixed',
+            bottom: '24px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            zIndex: 10000,
+            background: 'rgba(10, 10, 10, 0.85)',
+            backdropFilter: 'blur(10px)',
+            border: '1px solid rgba(255, 255, 255, 0.15)',
+            borderRadius: '999px',
+            padding: '8px 24px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '20px',
+            color: '#fff',
+            fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+            boxShadow: '0 4px 20px rgba(0,0,0,0.5)'
+          }}>
+            <button 
+              onClick={prevSlide}
+              disabled={currentSlide === 0}
+              style={{
+                background: 'transparent',
+                border: 'none',
+                color: currentSlide === 0 ? 'rgba(255,255,255,0.3)' : '#fff',
+                fontSize: '18px',
+                cursor: currentSlide === 0 ? 'default' : 'pointer',
+                padding: '4px 10px',
+                fontWeight: 'bold'
+              }}
+            >
+              ←
+            </button>
+            <span style={{ fontSize: '13px', fontWeight: 'bold', minWidth: '80px', textAlign: 'center' }}>
+              Slide {currentSlide + 1} / {deckSlides.length}
+            </span>
+            <button 
+              onClick={nextSlide}
+              disabled={currentSlide === deckSlides.length - 1}
+              style={{
+                background: 'transparent',
+                border: 'none',
+                color: currentSlide === deckSlides.length - 1 ? 'rgba(255,255,255,0.3)' : '#fff',
+                fontSize: '18px',
+                cursor: currentSlide === deckSlides.length - 1 ? 'default' : 'pointer',
+                padding: '4px 10px',
+                fontWeight: 'bold'
+              }}
+            >
+              →
+            </button>
+            <div style={{ height: '16px', width: '1px', background: 'rgba(255,255,255,0.2)' }} />
+            <button
+              onClick={() => setShowNotes((prev) => !prev)}
+              style={{
+                background: showNotes ? 'var(--mint)' : 'transparent',
+                border: '1px solid ' + (showNotes ? 'var(--mint)' : 'rgba(255,255,255,0.3)'),
+                color: showNotes ? 'var(--ink)' : '#fff',
+                padding: '4px 14px',
+                borderRadius: '999px',
+                fontSize: '11px',
+                fontWeight: 'bold',
+                cursor: 'pointer'
+              }}
+            >
+              Speaker Notes (N)
+            </button>
+            <button
+              onClick={() => window.print()}
+              style={{
+                background: 'transparent',
+                border: '1px solid rgba(255,255,255,0.3)',
+                color: '#fff',
+                padding: '4px 14px',
+                borderRadius: '999px',
+                fontSize: '11px',
+                fontWeight: 'bold',
+                cursor: 'pointer'
+              }}
+            >
+              PDF ⎙
+            </button>
+          </div>
+
+          {/* Speaker Notes Overlay Drawer */}
+          {showNotes && (
+            <div className="no-print" style={{
+              position: 'fixed',
+              bottom: '90px',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              width: '800px',
+              maxHeight: '180px',
+              overflowY: 'auto',
+              background: '#fcfcfc',
+              color: '#1a1a1a',
+              border: '2px solid #000',
+              boxShadow: '0 8px 30px rgba(0,0,0,0.6)',
+              borderRadius: '12px',
+              padding: '20px',
+              zIndex: 10001,
+              fontFamily: 'var(--font-body), sans-serif',
+              fontSize: '15px',
+              lineHeight: '1.5'
+            }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px', borderBottom: '1px solid rgba(0,0,0,0.1)', paddingBottom: '4px' }}>
+                <span style={{ fontWeight: 'bold', textTransform: 'uppercase', fontSize: '11px', letterSpacing: '0.1em', color: 'var(--pop-a)' }}>✳ Speaker Script</span>
+                <button 
+                  onClick={() => setShowNotes(false)}
+                  style={{ background: 'transparent', border: 'none', fontWeight: 'bold', cursor: 'pointer', fontSize: '12px' }}
+                >
+                  ✕ Close
+                </button>
+              </div>
+              <p style={{ margin: 0 }}>{slide.notes}</p>
+            </div>
+          )}
+          
+          {/* Tweaks Panel overlay for testing configurations inside the deck */}
+          <div style={{ display: 'none' }}>
+            <window.SPTweaksPanel
+              currentTheme="Classic"
+              onThemeChange={() => {}}
+              currentType="Acid+Gara+Helv"
+              onTypeChange={() => {}}
+            />
+          </div>
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<SPDeck />);
+  </script>
+</body>
+</html>

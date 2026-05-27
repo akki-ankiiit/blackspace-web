@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Blackspace® — A content studio (Bengaluru)</title>
+  <meta name="description" content="Blackspace is a content studio. Writers who shoot, editors who pitch, directors who care about commas. We build visual campaigns and tactile digital applications.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- SEO & Accessibility -->
+  <link rel="canonical" href="index.html">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..700;1,400..700&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+  
+  <!-- CDN React & Babel -->
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+  <div id="root" data-testid="app-root"></div>
+
+  <!-- Load component definitions -->
+  <script type="text/babel" src="sp-kit.jsx"></script>
+  <script type="text/babel" src="tweaks-panel.jsx"></script>
+  <script type="text/babel" src="pages/app.jsx"></script>
+  <script type="text/babel" src="pages/home.jsx"></script>
+
+  <!-- Boot Page -->
+  <script type="text/babel">
+    /*EDITMODE-BEGIN*/
+    const config = {
+      theme: "Classic",
+      typography: "Acid+Gara+Helv"
+    };
+    /*EDITMODE-END*/
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(
+      <window.SPApp activePage="home">
+        <window.SPHome />
+      </window.SPApp>
+    );
+  </script>
+</body>
+</html>

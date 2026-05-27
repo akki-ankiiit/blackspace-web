@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Print Intake Brief — Blackspace®</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;1,400&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #000000;
+      --paper: #ffffff;
+      --accent: #e2ede2;
+    }
+    
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 40px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background-color: var(--paper);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 32px;
+      margin: 0 0 8px 0;
+      letter-spacing: -0.03em;
+    }
+
+    .subtitle {
+      font-family: 'EB Garamond', serif;
+      font-style: italic;
+      font-size: 18px;
+      margin: 0 0 40px 0;
+      opacity: 0.8;
+    }
+
+    .form-section {
+      margin-bottom: 30px;
+    }
+
+    .section-title {
+      font-family: 'Space Grotesk', sans-serif;
+      text-transform: uppercase;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      border-bottom: 2px solid var(--ink);
+      padding-bottom: 8px;
+      margin-bottom: 20px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .field {
+      margin-bottom: 20px;
+    }
+
+    .label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: bold;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .line-input {
+      width: 100%;
+      height: 36px;
+      border-bottom: 1.5px solid var(--ink);
+    }
+
+    .write-box {
+      width: 100%;
+      height: 180px;
+      border: 1.5px solid var(--ink);
+      margin-top: 10px;
+      position: relative;
+    }
+
+    .write-box::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: linear-gradient(rgba(0,0,0,0.06) 1px, transparent 1px);
+      background-size: 100% 24px;
+      pointer-events: none;
+    }
+
+    .checkboxes {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-top: 10px;
+    }
+
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+    }
+
+    .checkbox-box {
+      width: 14px;
+      height: 14px;
+      border: 1.5px solid var(--ink);
+    }
+
+    .footer {
+      margin-top: 60px;
+      border-top: 1px solid rgba(0,0,0,0.1);
+      padding-top: 20px;
+      font-size: 11px;
+      display: flex;
+      justify-content: space-between;
+      opacity: 0.6;
+    }
+
+    .no-print-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: var(--ink);
+      color: var(--paper);
+      padding: 12px 24px;
+      border-radius: 99px;
+      border: none;
+      font-weight: bold;
+      font-size: 13px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      z-index: 100;
+    }
+
+    @media print {
+      body {
+        padding: 20px;
+      }
+      .no-print-btn {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  
+  <button class="no-print-btn" onclick="window.print()">Print This Form ⎙</button>
+
+  <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+    <div>
+      <h1>✳ blackspace®</h1>
+      <div class="subtitle">Writers who shoot. Editors who pitch. Directors who care about commas.</div>
+    </div>
+    <div style="text-align: right; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; font-weight: bold; opacity: 0.8;">
+      Day 0 Intake Brief
+    </div>
+  </div>
+
+  <div class="form-section">
+    <div class="section-title">01 / Contact Details</div>
+    <div class="grid-2">
+      <div class="field">
+        <span class="label">Full Name</span>
+        <div class="line-input"></div>
+      </div>
+      <div class="field">
+        <span class="label">Company / Organization</span>
+        <div class="line-input"></div>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="field">
+        <span class="label">Email Address</span>
+        <div class="line-input"></div>
+      </div>
+      <div class="field">
+        <span class="label">Phone / WhatsApp</span>
+        <div class="line-input"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-section">
+    <div class="section-title">02 / Project Parameters</div>
+    <div class="field">
+      <span class="label">Services Required</span>
+      <div class="checkboxes">
+        <div class="checkbox-item"><div class="checkbox-box"></div> Campaigns</div>
+        <div class="checkbox-item"><div class="checkbox-box"></div> Branded Films</div>
+        <div class="checkbox-item"><div class="checkbox-box"></div> Post Production</div>
+        <div class="checkbox-item"><div class="checkbox-box"></div> Web & Interactive</div>
+        <div class="checkbox-item"><div class="checkbox-box"></div> AI Workflow</div>
+        <div class="checkbox-item"><div class="checkbox-box"></div> Brand Strategy</div>
+      </div>
+    </div>
+    <div class="field" style="margin-top: 25px;">
+      <span class="label">Estimated Budget Scale</span>
+      <div class="checkboxes">
+        <div class="checkbox-item"><div class="checkbox-box"></div> &lt; $10k</div>
+        <div class="checkbox-item"><div class="checkbox-box"></div> $10k - $25k</div>
+        <div class="checkbox-item"><div class="checkbox-box"></div> $25k - $50k</div>
+        <div class="checkbox-item"><div class="checkbox-box"></div> $50k+</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-section" style="margin-top: 35px;">
+    <div class="section-title">03 / Project Scope & Context</div>
+    <span class="label">Describe what success looks like, timelines, and raw prompts</span>
+    <div class="write-box"></div>
+  </div>
+
+  <div class="footer">
+    <span>Blackspace Content Studio • hello@blackspace.media</span>
+    <span>Koramangala 5th Block, Bengaluru, IN</span>
+  </div>
+
+  <script>
+    // Trigger print dialog immediately on load if loaded with query param
+    if (window.location.search.includes('print=true')) {
+      window.onload = function() {
+        window.print();
+      }
+    }
+  </script>
+</body>
+</html>
