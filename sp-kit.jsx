@@ -85,7 +85,7 @@
   const baseStyles = `
     * {
       box-sizing: border-box;
-      transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease;
+      transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease, transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
     }
     body {
       margin: 0;
@@ -114,6 +114,21 @@
     @keyframes marquee {
       0% { transform: translate3d(0, 0, 0); }
       100% { transform: translate3d(-50%, 0, 0); }
+    }
+
+    @keyframes spin-slow {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    
+    .sp-star-container {
+      animation: spin-slow 25s linear infinite;
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    
+    .sp-star-container:hover {
+      animation-duration: 6s;
+      transform: scale(1.15);
     }
     
     @media print {
@@ -308,6 +323,7 @@
     hoverScale = true
   }) {
     const [currentRotate, setCurrentRotate] = React.useState(rotation);
+    const [isHovered, setIsHovered] = React.useState(false);
     const parsedRotation = parseFloat(rotation) || 0;
 
     const baseStickerStyle = {
@@ -318,7 +334,7 @@
       padding: '16px 20px',
       color: 'var(--ink)',
       position: 'relative',
-      transform: `rotate(${currentRotate})`,
+      transform: isHovered && hoverScale ? `translate(-4px, -4px) rotate(${currentRotate})` : `rotate(${currentRotate})`,
       transition: 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease',
       cursor: 'default',
       userSelect: 'none',
@@ -326,22 +342,27 @@
     };
 
     // Card shadow styling logic
+    const normalShadow = '4px 5px 0 var(--ink)';
+    const hoverShadow = '8px 9px 0 var(--ink)';
+    const activeShadow = isHovered && hoverScale ? hoverShadow : normalShadow;
+
     if (variant === 'round') {
       baseStickerStyle.borderRadius = '999px';
-      baseStickerStyle.boxShadow = '4px 5px 0 var(--ink)';
+      baseStickerStyle.boxShadow = activeShadow;
     } else if (variant === 'square') {
       baseStickerStyle.borderRadius = '12px';
-      baseStickerStyle.boxShadow = '4px 5px 0 var(--ink)';
+      baseStickerStyle.boxShadow = activeShadow;
     } else if (variant === 'torn') {
       baseStickerStyle.borderRadius = '2px';
       baseStickerStyle.clipPath = 'polygon(2% 1%, 98% 3%, 97% 95%, 68% 98%, 32% 96%, 1% 94%)';
     } else {
       // tape
       baseStickerStyle.borderRadius = '12px';
-      baseStickerStyle.boxShadow = '4px 5px 0 var(--ink)';
+      baseStickerStyle.boxShadow = activeShadow;
     }
 
     const handleMouseEnter = () => {
+      setIsHovered(true);
       if (hoverScale) {
         // Exaggerate rotation slightly on hover + add minor tilt
         setCurrentRotate(`${parsedRotation + (parsedRotation >= 0 ? 4 : -4)}deg`);
@@ -349,6 +370,7 @@
     };
 
     const handleMouseLeave = () => {
+      setIsHovered(false);
       setCurrentRotate(rotation);
     };
 
@@ -368,9 +390,9 @@
       return (
         <div style={{
           display: 'inline-block',
-          filter: 'drop-shadow(4px 5px 0 var(--ink))',
-          transform: `rotate(${currentRotate})`,
-          transition: 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+          filter: isHovered && hoverScale ? 'drop-shadow(8px 9px 0 var(--ink))' : 'drop-shadow(4px 5px 0 var(--ink))',
+          transform: isHovered && hoverScale ? `translate(-4px, -4px) rotate(${currentRotate})` : `rotate(${currentRotate})`,
+          transition: 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.4s ease'
         }}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
@@ -423,24 +445,31 @@
     bottom,
     style = {}
   }) {
-    const positionStyles = {
+    const containerStyles = {
       position: 'absolute',
       width: `${size}px`,
       height: `${size}px`,
-      backgroundColor: color,
-      clipPath: 'polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)',
-      transform: `rotate(${rotate})`,
       top: top !== undefined ? top : 'auto',
       right: right !== undefined ? right : 'auto',
       left: left !== undefined ? left : 'auto',
       bottom: bottom !== undefined ? bottom : 'auto',
       zIndex: 1,
       pointerEvents: 'none',
-      transition: 'transform 0.5s ease',
       ...style
     };
 
-    return <div className="sp-star" style={positionStyles} />;
+    return (
+      <div className="sp-star-container" style={containerStyles}>
+        <div style={{
+          width: '100%',
+          height: '100%',
+          backgroundColor: color,
+          clipPath: 'polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)',
+          transform: `rotate(${rotate})`,
+          transition: 'transform 0.5s ease'
+        }} />
+      </div>
+    );
   }
 
   // Endless horizontal scrolling word marquee
